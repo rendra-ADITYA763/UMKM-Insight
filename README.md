@@ -67,4 +67,3 @@ Anda dapat mencoba sistem dengan akun berikut:
 - `/Archives`: File prototype HTML asli sebelum migrasi ke PHP.
 
 ---
-*Dibuat oleh Tim RPL 2 - UMKM Insight*
