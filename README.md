@@ -1,6 +1,6 @@
 # UMKM Insight - Platform Analitik Bisnis UMKM
 
-UMKM Insight adalah platform berbasis web yang membantu pelaku UMKM memantau performa bisnis mereka melalui visualisasi data transaksi riil (simulasi integrasi SmartBank). Proyek ini dikembangkan menggunakan PHP Native dan MySQL sebagai bagian dari tugas besar Rekayasa Perangkat Lunak (RPL).
+UMKM Insight adalah platform berbasis web yang membantu pelaku UMKM memantau performa bisnis mereka melalui visualisasi data transaksi riil (simulasi integrasi SmartBank). Proyek ini dikembangkan menggunakan PHP Native dan MySQL.
 
 ## 🚀 Fitur Utama
 - **Dashboard Analytics**: Ringkasan pendapatan, pengeluaran, dan laba bersih.
