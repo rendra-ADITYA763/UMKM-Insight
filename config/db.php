@@ -28,4 +28,9 @@ try {
 function sanitize($data) {
     return htmlspecialchars(strip_tags(trim($data)));
 }
+
+// Fungsi helper untuk format mata uang Rupiah
+function formatRupiah($angka) {
+    return "Rp " . number_format($angka, 0, ',', '.');
+}
 ?>

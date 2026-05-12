@@ -60,7 +60,17 @@ $is_premium = ($_SESSION['tier'] ?? 'free') === 'premium';
             <?php elseif($current_role === 'admin'): ?>
                 <li class="nav-item">
                     <a href="admin.php" class="<?php echo ($activePage == 'admin') ? 'active' : ''; ?>">
-                        <i class="ph ph-shield-check"></i> Sistem & Audit
+                        <i class="ph ph-users-three"></i> Manajemen User
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="audit-logs.php" class="<?php echo ($activePage == 'audit-logs') ? 'active' : ''; ?>">
+                        <i class="ph ph-list-magnifying-glass"></i> Audit Logs
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="system-config.php" class="<?php echo ($activePage == 'system-config') ? 'active' : ''; ?>">
+                        <i class="ph ph-gear"></i> System Config
                     </a>
                 </li>
             <?php endif; ?>

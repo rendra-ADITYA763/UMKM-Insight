@@ -49,7 +49,7 @@ foreach ($chartRows as $row) {
 }
 
 // 6. Fetch Notifications
-$stmt = $pdo->prepare("SELECT * FROM notifications WHERE target_user_id = ? ORDER BY created_at DESC LIMIT 3");
+$stmt = $pdo->prepare("SELECT * FROM notifications WHERE user_id = ? ORDER BY created_at DESC LIMIT 3");
 $stmt->execute([$userId]);
 $notifications = $stmt->fetchAll();
 
@@ -181,21 +181,25 @@ include 'includes/sidebar.php';
                 <div class="flex justify-between items-center mb-4">
                     <h3 class="text-sm font-bold flex items-center gap-2"><i class="ph ph-trend-up text-emerald-500"></i> Penjualan</h3>
                 </div>
-                <canvas id="mini-sales" style="height: 100px;"></canvas>
+                <div style="height: 100px; position: relative;">
+                    <canvas id="mini-sales"></canvas>
+                </div>
                 <a href="laporan-penjualan.php" class="text-[11px] text-brand-600 font-bold block mt-3">Detail Penjualan →</a>
             </div>
             <div class="card p-5">
                 <div class="flex justify-between items-center mb-4">
                     <h3 class="text-sm font-bold flex items-center gap-2"><i class="ph ph-money text-blue-500"></i> Arus Kas</h3>
                 </div>
-                <canvas id="mini-cashflow" style="height: 100px;"></canvas>
+                <div style="height: 100px; position: relative;">
+                    <canvas id="mini-cashflow"></canvas>
+                </div>
                 <a href="arus-kas.php" class="text-[11px] text-brand-600 font-bold block mt-3">Detail Arus Kas →</a>
             </div>
             <div class="card p-5">
                 <div class="flex justify-between items-center mb-4">
                     <h3 class="text-sm font-bold flex items-center gap-2"><i class="ph ph-package text-amber-500"></i> Produk</h3>
                 </div>
-                <div class="flex items-center justify-center" style="height: 100px;">
+                <div style="height: 100px; position: relative;">
                     <canvas id="mini-product"></canvas>
                 </div>
                 <a href="performa-produk.php" class="text-[11px] text-brand-600 font-bold block mt-3">Detail Produk →</a>

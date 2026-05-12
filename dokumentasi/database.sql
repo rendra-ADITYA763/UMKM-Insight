@@ -97,6 +97,20 @@ CREATE TABLE `tier_requests` (
   KEY `user_id` (`user_id`),
   CONSTRAINT `tier_requests_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- 8. Table `offers`
+CREATE TABLE `offers` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(100) NOT NULL,
+  `description` text NOT NULL,
+  `price` decimal(15,2) NOT NULL,
+  `target_tier` enum('all','free','premium') NOT NULL DEFAULT 'all',
+  `created_by` int(11) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`),
+  KEY `created_by` (`created_by`),
+  CONSTRAINT `offers_ibfk_1` FOREIGN KEY (`created_by`) REFERENCES `users` (`id`) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 -- Password for all is: password (hashed with BCRYPT)
 INSERT INTO `users` (`id`, `username`, `password`, `role`, `nama_lengkap`, `email`, `nama_bisnis`, `kategori`, `smartbank_id`, `tier`, `tier_expiry`) VALUES
 (1, 'budi', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'client', 'Budi Santoso', 'budi@tokoberkah.com', 'Toko Berkah Utama', 'Makanan & Minuman', 'SB-UMKM-001', 'free', NULL),
@@ -126,5 +140,10 @@ INSERT INTO `transaction_cache` (`user_id`, `product_id`, `external_id`, `type`,
 -- Seed Tier Requests
 INSERT INTO `tier_requests` (`user_id`, `status`, `requested_at`) VALUES
 (1, 'pending', NOW());
+
+-- Seed Offers
+INSERT INTO `offers` (`title`, `description`, `price`, `target_tier`, `created_by`) VALUES
+('Voucher Ramadan Ceria', 'Potongan biaya admin SmartBank sebesar 50% untuk transaksi Marketplace.', 25000.00, 'free', 4),
+('Paket Premium Anniversary', 'Upgrade ke Premium 1 Tahun dengan harga spesial 500rb saja.', 500000.00, 'all', 4);
 
 COMMIT;

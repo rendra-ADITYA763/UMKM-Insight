@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
 
     if ($targetId === 'all') {
         // Blast to all clients
-        $stmt = $pdo->prepare("INSERT INTO notifications (target_user_id, sender_id, type, title, message) 
+        $stmt = $pdo->prepare("INSERT INTO notifications (user_id, sender_id, type, title, message) 
                                SELECT id, ?, 'admin', ?, ? FROM users WHERE role = 'client'");
         if ($stmt->execute([$user['id'], $title, $msg])) {
             $success = "Blast notifikasi ke seluruh UMKM berhasil dikirim.";
@@ -28,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
         }
     } else {
         // Single user
-        $stmt = $pdo->prepare("INSERT INTO notifications (target_user_id, sender_id, type, title, message) VALUES (?, ?, 'admin', ?, ?)");
+        $stmt = $pdo->prepare("INSERT INTO notifications (user_id, sender_id, type, title, message) VALUES (?, ?, 'admin', ?, ?)");
         if ($stmt->execute([$targetId, $user['id'], $title, $msg])) {
             $success = "Notifikasi berhasil dikirim.";
         } else {
@@ -66,45 +66,11 @@ $stmt->execute([$roleFilter, $search, $search, $search]);
 $users = $stmt->fetchAll();
 
 include 'includes/header.php';
+include 'includes/sidebar.php';
 ?>
 
-<style>
-    body { background: var(--surface); display: flex; height: 100vh; overflow: hidden; }
-    .admin-sidebar { width: 260px; background: #0f172a; color: white; display: flex; flex-direction: column; }
-    .admin-nav { flex: 1; padding: 20px 12px; }
-    .admin-nav a { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 10px; color: #94a3b8; font-size: 0.875rem; text-decoration: none; transition: all 0.2s; margin-bottom: 4px; }
-    .admin-nav a:hover { background: rgba(255,255,255,0.05); color: white; }
-    .admin-nav a.active { background: var(--brand-600); color: white; }
-    .main-wrap { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
-</style>
-
-<aside class="admin-sidebar">
-    <div class="p-6 border-b border-slate-800 flex items-center gap-3">
-        <i class="ph-fill ph-chart-polar text-2xl text-brand-400"></i>
-        <span class="font-bold text-lg">Admin Panel</span>
-    </div>
-    <nav class="admin-nav">
-        <a href="admin.php" class="active"><i class="ph ph-users-three"></i> Manajemen User</a>
-        <a href="#" class="opacity-50 pointer-events-none"><i class="ph ph-list-magnifying-glass"></i> Audit Logs</a>
-        <a href="#" class="opacity-50 pointer-events-none"><i class="ph ph-gear"></i> System Config</a>
-    </nav>
-    <div class="p-4 border-t border-slate-800">
-        <a href="logout.php" class="btn btn-ghost btn-sm btn-full text-slate-400 hover:text-white" style="justify-content: flex-start;"><i class="ph ph-sign-out"></i> Keluar</a>
-    </div>
-</aside>
-
-<div class="main-wrap">
-    <header class="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-8 sticky top-0 z-20">
-        <div class="flex items-center gap-2 text-sm font-bold text-slate-700">
-            <i class="ph-fill ph-shield-check text-brand-600"></i> Super Admin Mode
-        </div>
-        <div class="flex items-center gap-3">
-            <span class="text-xs text-slate-400"><?php echo $user['nama_lengkap']; ?></span>
-            <div class="w-8 h-8 rounded-full bg-slate-800 text-white flex items-center justify-center font-bold text-xs">A</div>
-        </div>
-    </header>
-
-    <div class="main-content">
+<div class="main-content">
+    <?php include 'includes/topbar.php'; ?>
         <div class="mb-8">
             <h1 class="text-2xl font-extrabold tracking-tight">Ekosistem UMKM Insight</h1>
             <p class="text-sm text-slate-500 mt-1">Pantau statistik global dan kelola hak akses seluruh pengguna sistem.</p>
@@ -178,7 +144,7 @@ include 'includes/header.php';
                         <tr><th>Nama / Bisnis</th><th>Role</th><th>Email</th><th>Tier</th><th class="text-center">Aksi</th></tr>
                     </thead>
                     <tbody>
-                        <?php foreach($usersList as $u): ?>
+                        <?php foreach($users as $u): ?>
                             <tr>
                                 <td>
                                     <p class="font-bold text-sm text-slate-800"><?php echo $u['nama_bisnis'] ?: $u['nama_lengkap']; ?></p>
@@ -224,25 +190,34 @@ include 'includes/header.php';
     </div>
 </div>
 
-<!-- Notif Modal -->
-<div class="modal-overlay" id="notif-modal">
-    <div class="modal max-w-sm">
-        <h3 class="text-lg font-bold mb-4">Kirim Pesan Admin</h3>
-        <p class="text-xs text-slate-500 mb-4">Ke: <strong id="target-name"></strong></p>
-        <form action="admin.php" method="POST" class="flex flex-col gap-4">
+<!-- Notif Modal (Gaya Inline Premium) -->
+<div class="modal-overlay" id="notif-modal" style="display: none; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(8px); z-index: 9999; align-items: center; justify-content: center; padding: 20px;">
+    <div class="modal" style="background: white; border-radius: 1.5rem; width: 100%; max-width: 450px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); padding: 2rem; position: relative;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+            <h3 style="font-size: 1.125rem; font-weight: 800; color: #0f172a;">Kirim Pesan Admin</h3>
+            <button type="button" style="background: #f1f5f9; border: none; width: 28px; height: 28px; border-radius: 50%; color: #64748b; cursor: pointer;" onclick="closeNotifModal()">
+                <i class="ph ph-x"></i>
+            </button>
+        </div>
+        <p style="font-size: 0.75rem; color: #64748b; margin-bottom: 1.5rem; background: #f8fafc; padding: 10px; border-radius: 8px;">Tujuan: <strong id="target-name" style="color: #0d9488;"></strong></p>
+        
+        <form action="admin.php" method="POST" style="display: flex; flex-direction: column; gap: 1rem;">
             <input type="hidden" name="action" value="send_notif">
             <input type="hidden" name="target_user_id" id="target-id">
-            <div class="form-group">
-                <label class="form-label">Judul Notifikasi</label>
-                <input type="text" name="title" class="form-input" placeholder="e.g. Pemeliharaan Sistem" required>
+            
+            <div style="display: flex; flex-direction: column; gap: 0.4rem;">
+                <label style="font-size: 0.7rem; font-weight: 700; color: #64748b; text-transform: uppercase;">Judul Notifikasi</label>
+                <input type="text" name="title" class="form-input" style="width: 100%; padding: 0.7rem 1rem; border: 1px solid #e2e8f0; border-radius: 0.75rem; font-size: 0.875rem;" placeholder="e.g. Pemeliharaan Sistem" required>
             </div>
-            <div class="form-group">
-                <label class="form-label">Isi Pesan</label>
-                <textarea name="message" class="form-input" rows="3" required></textarea>
+            
+            <div style="display: flex; flex-direction: column; gap: 0.4rem;">
+                <label style="font-size: 0.7rem; font-weight: 700; color: #64748b; text-transform: uppercase;">Isi Pesan</label>
+                <textarea name="message" class="form-input" style="width: 100%; padding: 0.7rem 1rem; border: 1px solid #e2e8f0; border-radius: 0.75rem; font-size: 0.875rem; min-height: 80px;" required></textarea>
             </div>
-            <div class="flex justify-end gap-2 mt-4">
-                <button type="button" class="btn btn-ghost btn-sm" onclick="document.getElementById('notif-modal').classList.remove('open')">Batal</button>
-                <button type="submit" class="btn btn-primary btn-sm px-6">Kirim</button>
+            
+            <div style="display: flex; justify-content: flex-end; gap: 0.75rem; margin-top: 0.5rem;">
+                <button type="button" class="btn btn-ghost" style="font-size: 0.875rem;" onclick="closeNotifModal()">Batal</button>
+                <button type="submit" class="btn btn-primary" style="background: #0d9488; color: white; padding: 0.6rem 1.5rem; font-size: 0.875rem; border-radius: 0.75rem;">Kirim Sekarang</button>
             </div>
         </form>
     </div>
@@ -252,7 +227,15 @@ include 'includes/header.php';
     function openNotifModal(id, name) {
         document.getElementById('target-id').value = id;
         document.getElementById('target-name').textContent = name;
-        document.getElementById('notif-modal').classList.add('open');
+        const modal = document.getElementById('notif-modal');
+        modal.style.display = 'flex';
+        modal.classList.add('open');
+    }
+
+    function closeNotifModal() {
+        const modal = document.getElementById('notif-modal');
+        modal.style.display = 'none';
+        modal.classList.remove('open');
     }
 </script>
 

@@ -11,8 +11,8 @@ UMKM Insight adalah platform berbasis web yang membantu pelaku UMKM memantau per
 - **Multi-Role Access**: Admin, Operator, dan Client (UMKM).
 
 ## 🛠️ Tech Stack
-- **Backend**: PHP 8.x
-- **Database**: MySQL (MariaDB)
+- **Backend**: PHP 8.5.1
+- **Database**: MySQL
 - **Frontend**: Tailwind CSS, Phosphor Icons
 - **Visualisasi**: Chart.js
 

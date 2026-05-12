@@ -28,11 +28,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
             $pdo->prepare("UPDATE users SET tier = 'premium', tier_expiry = ? WHERE id = ?")->execute([$expiry, $targetUserId]);
             
             // Send Notification
-            $pdo->prepare("INSERT INTO notifications (target_user_id, sender_id, type, title, message) VALUES (?, ?, 'auto', 'Akun Premium Aktif!', 'Selamat! Pengajuan upgrade akun Anda telah disetujui. Nikmati fitur premium sekarang.')")
+            $pdo->prepare("INSERT INTO notifications (user_id, sender_id, type, title, message) VALUES (?, ?, 'auto', 'Akun Premium Aktif!', 'Selamat! Pengajuan upgrade akun Anda telah disetujui. Nikmati fitur premium sekarang.')")
                 ->execute([$targetUserId, $user['id']]);
         } else {
             // Send Notification for Rejection
-            $pdo->prepare("INSERT INTO notifications (target_user_id, sender_id, type, title, message) VALUES (?, ?, 'auto', 'Pengajuan Tier Ditolak', 'Maaf, pengajuan upgrade akun Anda belum dapat disetujui saat ini. Silakan hubungi bantuan.')")
+            $pdo->prepare("INSERT INTO notifications (user_id, sender_id, type, title, message) VALUES (?, ?, 'auto', 'Pengajuan Tier Ditolak', 'Maaf, pengajuan upgrade akun Anda belum dapat disetujui saat ini. Silakan hubungi bantuan.')")
                 ->execute([$targetUserId, $user['id']]);
         }
 
@@ -201,7 +201,7 @@ include 'includes/sidebar.php';
                 <div class="card p-6">
                     <div class="flex justify-between items-center mb-6">
                         <h2 class="text-lg font-bold flex items-center gap-2"><i class="ph ph-megaphone text-blue-500"></i> Kelola Penawaran & Promo</h2>
-                        <button class="btn btn-primary btn-sm" onclick="document.getElementById('offer-modal').classList.add('open')">
+                        <button class="btn btn-primary btn-sm" onclick="openOfferModal()">
                             <i class="ph ph-plus"></i> Buat Promo
                         </button>
                     </div>
@@ -257,43 +257,62 @@ include 'includes/sidebar.php';
                 </div>
             </div>
         </div>
-    </div>
-</div>
+    </div> <!-- End of animate-fade-in -->
+</div> <!-- End of main-content -->
 
-<!-- Offer Modal -->
-<div class="modal-overlay" id="offer-modal">
-    <div class="modal max-w-md">
-        <h2 class="text-xl font-bold mb-6">Buat Penawaran Baru</h2>
-        <form action="operator.php" method="POST" class="flex flex-col gap-4">
+<!-- Offer Modal (Gaya Inline Premium) -->
+<div class="modal-overlay" id="offer-modal" style="display: none; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(8px); z-index: 9999; align-items: center; justify-content: center; padding: 20px;">
+    <div class="modal" style="background: white; border-radius: 1.5rem; width: 100%; max-width: 500px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); padding: 2rem; position: relative; border: 1px solid rgba(255,255,255,0.1);">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+            <h2 style="font-size: 1.25rem; font-weight: 800; color: #0f172a; letter-spacing: -0.025em;">Buat Penawaran Baru</h2>
+            <button type="button" style="background: #f1f5f9; border: none; width: 32px; height: 32px; border-radius: 50%; color: #64748b; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s;" onclick="document.getElementById('offer-modal').style.display='none'">
+                <i class="ph ph-x" style="font-weight: bold;"></i>
+            </button>
+        </div>
+        
+        <form action="operator.php" method="POST" style="display: flex; flex-direction: column; gap: 1.25rem;">
             <input type="hidden" name="action" value="add_offer">
-            <div class="form-group">
-                <label class="form-label">Judul Promo</label>
-                <input type="text" name="title" class="form-input" placeholder="e.g. Promo Ramadhan" required>
+            
+            <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                <label style="font-size: 0.7rem; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em;">Judul Promo</label>
+                <input type="text" name="title" class="form-input" style="width: 100%; padding: 0.75rem 1rem; border: 1px solid #e2e8f0; border-radius: 0.75rem; font-size: 0.875rem;" placeholder="Contoh: Promo Berkah Ramadhan" required>
             </div>
-            <div class="form-group">
-                <label class="form-label">Deskripsi Singkat</label>
-                <textarea name="description" class="form-input" rows="3" placeholder="Jelaskan keuntungan promo ini..." required></textarea>
+            
+            <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                <label style="font-size: 0.7rem; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em;">Deskripsi Singkat</label>
+                <textarea name="description" class="form-input" style="width: 100%; padding: 0.75rem 1rem; border: 1px solid #e2e8f0; border-radius: 0.75rem; font-size: 0.875rem; min-height: 100px; resize: vertical;" placeholder="Jelaskan keuntungan promo ini kepada pengguna..." required></textarea>
             </div>
-            <div class="grid grid-cols-2 gap-4">
-                <div class="form-group">
-                    <label class="form-label">Harga (Rp)</label>
-                    <input type="number" name="price" class="form-input" placeholder="10000" required>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                    <label style="font-size: 0.7rem; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em;">Harga (Rp)</label>
+                    <input type="number" name="price" class="form-input" style="width: 100%; padding: 0.75rem 1rem; border: 1px solid #e2e8f0; border-radius: 0.75rem; font-size: 0.875rem;" placeholder="10000" required>
                 </div>
-                <div class="form-group">
-                    <label class="form-label">Target Tier</label>
-                    <select name="target_tier" class="form-select">
+                <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                    <label style="font-size: 0.7rem; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em;">Target Tier</label>
+                    <select name="target_tier" class="form-select" style="width: 100%; padding: 0.75rem 1rem; border: 1px solid #e2e8f0; border-radius: 0.75rem; font-size: 0.875rem; background-color: white;">
                         <option value="all">Semua Pengguna</option>
-                        <option value="free">Free User</option>
-                        <option value="premium">Premium User</option>
+                        <option value="free">Hanya Free User</option>
+                        <option value="premium">Hanya Premium User</option>
                     </select>
                 </div>
             </div>
-            <div class="flex justify-end gap-3 mt-4">
-                <button type="button" class="btn btn-outline btn-sm" onclick="document.getElementById('offer-modal').classList.remove('open')">Batal</button>
-                <button type="submit" class="btn btn-primary btn-sm px-6">Publikasikan</button>
+            
+            <div style="display: flex; justify-content: flex-end; gap: 0.75rem; margin-top: 1rem; padding-top: 1rem; border-t: 1px solid #f1f5f9;">
+                <button type="button" class="btn btn-outline" style="padding: 0.6rem 1.25rem; font-size: 0.875rem; font-weight: 600; border-radius: 0.75rem;" onclick="document.getElementById('offer-modal').style.display='none'">Batal</button>
+                <button type="submit" class="btn btn-primary" style="padding: 0.6rem 1.5rem; font-size: 0.875rem; font-weight: 600; border-radius: 0.75rem; background: #0d9488; color: white;">Publikasikan Promo</button>
             </div>
         </form>
     </div>
 </div>
+
+<script>
+// Fungsi untuk membuka modal dengan aman
+function openOfferModal() {
+    const modal = document.getElementById('offer-modal');
+    modal.style.display = 'flex';
+    modal.classList.add('open');
+}
+</script>
 
 <?php include 'includes/footer.php'; ?>

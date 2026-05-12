@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     if ($stmt->execute([$ticketId])) {
         // Create Notification
         $msg = "Laporan Anda mengenai \"$subject\" telah diselesaikan oleh tim operator.";
-        $stmtNotif = $pdo->prepare("INSERT INTO notifications (target_user_id, type, title, message) VALUES (?, 'system', 'Pengaduan Selesai', ?)");
+        $stmtNotif = $pdo->prepare("INSERT INTO notifications (user_id, type, title, message) VALUES (?, 'auto', 'Pengaduan Selesai', ?)");
         $stmtNotif->execute([$userId, $msg]);
         
         $success = "Tiket berhasil diselesaikan dan pengguna telah dinotifikasi.";
