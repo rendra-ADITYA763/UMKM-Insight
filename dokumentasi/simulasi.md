@@ -86,4 +86,6 @@ Gunakan akun berikut untuk melakukan simulasi:
 - File prototype HTML asli tersimpan di folder `Archives/` sebagai referensi visual asli.
 
 ---
-*Tim Pengembang RPL 2 - UMKM Insight*
+Tim Pengembang RPL 2 - UMKM Insight
+
+kelompok 3
