@@ -19,6 +19,12 @@ $initial = strtoupper(substr($user_name, 0, 1));
     </div>
     
     <div style="display:flex;align-items:center;gap:16px;">
+        <!-- Theme Toggle -->
+        <button style="position:relative;background:none;border:none;cursor:pointer;color:var(--text-muted);font-size:1.25rem;" onclick="toggleTheme()" id="theme-toggle" title="Toggle Dark/Light Mode">
+            <i class="ph ph-moon dark:hidden"></i>
+            <i class="ph ph-sun hidden dark:block text-amber-400"></i>
+        </button>
+
         <!-- Notification Bell -->
         <button style="position:relative;background:none;border:none;cursor:pointer;color:var(--text-muted);font-size:1.25rem;" onclick="toggleNotifPanel()" id="notif-bell">
             <i class="ph ph-bell"></i>

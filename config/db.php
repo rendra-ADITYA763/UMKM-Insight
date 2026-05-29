@@ -5,9 +5,9 @@
  */
 
 $host = 'localhost';
-$db   = 'umkm_insight';
+$db   = 'ukm_insight';
 $user = 'root';
-$pass = 'root'; // Sesuaikan dengan password MySQL Anda (FlyEnv default: root)
+$pass = ''; // Sesuaikan dengan password MySQL Anda (FlyEnv default: root)
 $charset = 'utf8mb4';
 
 $dsn = "mysql:host=$host;dbname=$db;charset=$charset";

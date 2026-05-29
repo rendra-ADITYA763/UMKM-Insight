@@ -47,71 +47,93 @@ include 'includes/header.php';
 ?>
 
 <style>
-    body { min-height: 100vh; display: flex; background: var(--surface); }
-    .reg-container { max-width: 500px; width: 90%; margin: auto; padding: 40px 0; }
+    body { min-height: 100vh; display: flex; align-items: center; justify-content: center; position: relative; overflow-x: hidden; padding: 40px 0; }
 </style>
 
-<div class="reg-container animate-fade-in">
-    <div class="card p-8 md:p-10">
-        <div class="flex items-center gap-2 mb-6 justify-center">
-            <i class="ph-fill ph-chart-polar text-3xl text-brand-600"></i>
-            <span class="text-2xl font-bold tracking-tight">UMKM Insight</span>
-        </div>
-        <h1 class="text-2xl font-bold mb-2 text-center">Buat Akun Baru</h1>
-        <p class="text-slate-500 mb-8 text-sm text-center">Bergabunglah dengan ribuan UMKM yang telah beralih ke analitik cerdas.</p>
+<!-- Fullscreen animated background -->
+<div class="animated-bg w-full h-full fixed top-0 left-0 -z-10"></div>
 
-        <?php if($error): ?>
-            <div class="bg-rose-50 border border-rose-100 text-rose-600 p-3 rounded-lg text-sm mb-6 flex items-center gap-2">
-                <i class="ph ph-warning-circle"></i> <?php echo $error; ?>
-            </div>
-        <?php endif; ?>
-
-        <?php if($success): ?>
-            <div class="bg-emerald-50 border border-emerald-100 text-emerald-600 p-3 rounded-lg text-sm mb-6 flex items-center gap-2">
-                <i class="ph ph-check-circle"></i> <?php echo $success; ?> 
-                <a href="login.php" class="font-bold underline ml-auto">Login Sekarang</a>
-            </div>
-        <?php endif; ?>
-
-        <form action="register.php" method="POST" class="flex flex-col gap-4">
-            <div class="form-group">
-                <label class="form-label">Nama Lengkap</label>
-                <input type="text" name="nama" class="form-input" placeholder="e.g. Budi Santoso" required>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div class="form-group">
-                    <label class="form-label">Email</label>
-                    <input type="email" name="email" class="form-input" placeholder="budi@email.com" required>
+<div class="w-full max-w-[560px] px-6 relative z-10 animate-fade-in stagger-1 my-auto">
+    <div class="glass-card p-8 md:p-10 shadow-2xl relative overflow-hidden group">
+        
+        <!-- Decorative subtle glowing orb inside the card -->
+        <div class="absolute -left-20 -bottom-20 w-80 h-80 bg-indigo-500 rounded-full mix-blend-multiply dark:mix-blend-screen opacity-10 dark:opacity-20 group-hover:scale-125 transition-transform duration-1000 ease-out"></div>
+        
+        <div class="relative z-10">
+            <div class="flex items-center gap-2 mb-6 justify-center animate-pop-in stagger-2">
+                <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center pulse-glow shadow-lg shadow-indigo-500/30">
+                    <i class="ph-fill ph-chart-polar text-2xl text-white floating-element"></i>
                 </div>
-                <div class="form-group">
-                    <label class="form-label">Nama Bisnis (Optional)</label>
-                    <input type="text" name="bisnis" class="form-input" placeholder="Toko Berkah">
-                </div>
-            </div>
-            <div class="divider h-px bg-slate-100 my-2"></div>
-            <div class="form-group">
-                <label class="form-label">Username</label>
-                <input type="text" name="username" class="form-input" placeholder="pilih username unik" required>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div class="form-group">
-                    <label class="form-label">Password</label>
-                    <input type="password" name="password" class="form-input" placeholder="••••••••" required>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Konfirmasi Password</label>
-                    <input type="password" name="confirm_password" class="form-input" placeholder="••••••••" required>
-                </div>
+                <span class="text-2xl font-extrabold tracking-tight text-slate-800 dark:text-white">UMKM Insight</span>
             </div>
             
-            <button type="submit" class="btn btn-primary btn-full py-3 mt-4">
-                <i class="ph ph-user-plus"></i> Daftar Sekarang
-            </button>
-        </form>
+            <div class="text-center mb-8 animate-pop-in stagger-3">
+                <h1 class="text-2xl font-bold mb-2 text-slate-800 dark:text-white">Buat Akun Premium</h1>
+                <p class="text-slate-500 dark:text-slate-400 text-sm">Bergabunglah dengan ribuan UMKM yang telah beralih ke analitik cerdas.</p>
+            </div>
 
-        <p class="text-center text-sm text-slate-500 mt-8">
-            Sudah punya akun? <a href="login.php" class="text-brand-600 font-bold">Masuk di sini</a>
-        </p>
+            <?php if($error): ?>
+                <div class="bg-rose-50/80 dark:bg-rose-900/50 backdrop-blur-md border border-rose-200 dark:border-rose-800 text-rose-600 dark:text-rose-300 p-3 rounded-xl text-sm mb-6 flex items-center gap-2 animate-pop-in">
+                    <i class="ph-fill ph-warning-circle text-lg"></i> <?php echo $error; ?>
+                </div>
+            <?php endif; ?>
+
+            <?php if($success): ?>
+                <div class="bg-emerald-50/80 dark:bg-emerald-900/50 backdrop-blur-md border border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-300 p-4 rounded-xl text-sm mb-6 flex flex-col sm:flex-row items-center gap-3 animate-pop-in">
+                    <div class="flex items-center gap-2">
+                        <i class="ph-fill ph-check-circle text-xl"></i> <?php echo $success; ?> 
+                    </div>
+                    <a href="login.php" class="btn bg-gradient-to-r from-emerald-500 to-teal-500 text-white btn-sm shadow-md sm:ml-auto whitespace-nowrap">Login Sekarang</a>
+                </div>
+            <?php endif; ?>
+
+            <form action="register.php" method="POST" class="flex flex-col gap-4 animate-pop-in stagger-4">
+                <div class="form-group">
+                    <label class="form-label text-slate-700 dark:text-slate-300 font-bold text-[10px] uppercase tracking-wider mb-1">Nama Lengkap</label>
+                    <input type="text" name="nama" class="form-input bg-white/50 dark:bg-slate-800/50 backdrop-blur-sm border-white/60 dark:border-slate-700/60 focus:bg-white dark:focus:bg-slate-800 transition-all shadow-inner" placeholder="e.g. Budi Santoso" required>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="form-group">
+                        <label class="form-label text-slate-700 dark:text-slate-300 font-bold text-[10px] uppercase tracking-wider mb-1">Email Aktif</label>
+                        <input type="email" name="email" class="form-input bg-white/50 dark:bg-slate-800/50 backdrop-blur-sm border-white/60 dark:border-slate-700/60 focus:bg-white dark:focus:bg-slate-800 transition-all shadow-inner" placeholder="budi@email.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label text-slate-700 dark:text-slate-300 font-bold text-[10px] uppercase tracking-wider mb-1">Nama Bisnis <span class="text-slate-400 font-normal lowercase">(opsional)</span></label>
+                        <input type="text" name="bisnis" class="form-input bg-white/50 dark:bg-slate-800/50 backdrop-blur-sm border-white/60 dark:border-slate-700/60 focus:bg-white dark:focus:bg-slate-800 transition-all shadow-inner" placeholder="Toko Berkah">
+                    </div>
+                </div>
+                
+                <div class="divider h-px bg-slate-200/50 dark:bg-slate-700/50 my-3"></div>
+                
+                <div class="form-group">
+                    <label class="form-label text-slate-700 dark:text-slate-300 font-bold text-[10px] uppercase tracking-wider mb-1">Username Baru</label>
+                    <div class="relative">
+                        <i class="ph ph-at absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                        <input type="text" name="username" class="form-input pl-9 bg-white/50 dark:bg-slate-800/50 backdrop-blur-sm border-white/60 dark:border-slate-700/60 focus:bg-white dark:focus:bg-slate-800 transition-all shadow-inner" placeholder="pilih username unik" required>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="form-group">
+                        <label class="form-label text-slate-700 dark:text-slate-300 font-bold text-[10px] uppercase tracking-wider mb-1">Password</label>
+                        <input type="password" name="password" class="form-input bg-white/50 dark:bg-slate-800/50 backdrop-blur-sm border-white/60 dark:border-slate-700/60 focus:bg-white dark:focus:bg-slate-800 transition-all shadow-inner" placeholder="••••••••" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label text-slate-700 dark:text-slate-300 font-bold text-[10px] uppercase tracking-wider mb-1">Konfirmasi</label>
+                        <input type="password" name="confirm_password" class="form-input bg-white/50 dark:bg-slate-800/50 backdrop-blur-sm border-white/60 dark:border-slate-700/60 focus:bg-white dark:focus:bg-slate-800 transition-all shadow-inner" placeholder="••••••••" required>
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white shadow-lg shadow-indigo-500/30 btn-full py-3 mt-4 transform hover:-translate-y-1 transition-all">
+                    <i class="ph-bold ph-user-plus"></i> Bergabung Sekarang
+                </button>
+            </form>
+
+            <p class="text-center text-sm text-slate-500 dark:text-slate-400 mt-8 animate-pop-in stagger-5">
+                Sudah punya akun? <a href="login.php" class="text-indigo-600 dark:text-indigo-400 font-bold hover:underline">Masuk di sini</a>
+            </p>
+        </div>
     </div>
 </div>
 
