@@ -229,7 +229,7 @@ include 'includes/header.php';
         <!-- Logo -->
         <div class="flex items-center gap-3 mb-12 animate-pop-in stagger-1">
             <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-brand-400 to-teal-600 flex items-center justify-center shadow-lg pulse-glow">
-                <i class="ph-fill ph-chart-polar text-2xl text-white"></i>
+                <img src="assets/image/logo_desai.png" alt="Logo UMKM Insight" class="w-8 h-8 object-contain drop-shadow-md">
             </div>
             <span class="text-xl font-extrabold tracking-tight">UMKM Insight</span>
         </div>
@@ -378,7 +378,9 @@ include 'includes/header.php';
         <div class="mt-6 p-4 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-100 dark:border-slate-700/50 text-[10px] text-slate-400 leading-relaxed text-center animate-pop-in stagger-6">
             <strong class="text-slate-500 dark:text-slate-300">DEMO ACCOUNTS:</strong><br>
             Client: <code>budi</code> / <code>password</code> &nbsp;|&nbsp;
-            Admin: <code>admin_super</code> / <code>admin123</code>
+            client (premium): <code>sari</code> / <code>password</code> &nbsp;|&nbsp;
+            operator: <code>op_jaya</code> / <code>password</code> &nbsp;|&nbsp;
+            Admin: <code>admin_super</code> / <code>password</code> &nbsp;|&nbsp;
         </div>
     </div>
 </div>

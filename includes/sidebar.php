@@ -9,7 +9,7 @@ $is_premium = ($_SESSION['tier'] ?? 'free') === 'premium';
 
 <aside class="app-sidebar" id="sidebar">
     <div class="sidebar-brand">
-        <i class="ph-fill ph-chart-polar"></i>
+        <img src="assets/image/logo_desai.png" alt="Logo UMKM Insight" style="width: 24px; height: 24px; object-fit: contain;">
         <span>UMKM Insight</span>
     </div>
     

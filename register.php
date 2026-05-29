@@ -62,7 +62,7 @@ include 'includes/header.php';
         <div class="relative z-10">
             <div class="flex items-center gap-2 mb-6 justify-center animate-pop-in stagger-2">
                 <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center pulse-glow shadow-lg shadow-indigo-500/30">
-                    <i class="ph-fill ph-chart-polar text-2xl text-white floating-element"></i>
+                    <img src="assets/image/logo_desai.png" alt="Logo UMKM Insight" class="w-9 h-9 object-contain drop-shadow-md floating-element">
                 </div>
                 <span class="text-2xl font-extrabold tracking-tight text-slate-800 dark:text-white">UMKM Insight</span>
             </div>

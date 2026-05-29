@@ -45,7 +45,7 @@ include 'includes/header.php';
 
 <nav class="landing-nav" id="landing-nav">
     <div class="nav-inner">
-        <a href="#" class="brand"><i class="ph-fill ph-chart-polar"></i><span>UMKM Insight</span></a>
+        <a href="#" class="brand"><img src="assets/image/logo_desai.png" alt="Logo UMKM Insight" style="width: 28px; height: 28px; object-fit: contain;"><span>UMKM Insight</span></a>
         <div class="nav-links">
             <a href="#fitur">Fitur</a>
             <a href="#harga">Harga</a>
